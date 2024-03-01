@@ -10,6 +10,8 @@
     <link href="https://fonts.googleapis.com/css2?family=Mystery+Quest&display=swap" rel="stylesheet">
     <!-- FontAwesome -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" rel="stylesheet">
+    <!-- i18next -->
+    <script src="https://unpkg.com/i18next@19.0.0/i18next.min.js"></script>
     <style>
         body {
             font-family: 'Mystery Quest', cursive; /* Personalized font */
@@ -36,28 +38,49 @@
             border-radius: 10px;
             box-shadow: 0 4px 8px rgba(0,0,0,0.2);
         }
+        .play-button {
+            background-color: #6c757d;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            text-decoration: none;
+        }
     </style>
 </head>
 <body>
 
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-    <a class="navbar-brand" href="#">Tenerife MysteryCode</a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+    <a class="navbar-brand" href="#" id="navHome">Tenerife MysteryCode</a>
+    <button class="navbar-toggler" type="button" data-toggle="dropdown" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav ml-auto">
             <li class="nav-item active">
-                <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+                <a class="nav-link" href="#" id="navHomeLink">Home</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="#">About</a>
+                <a class="nav-link" href="#" id="navAboutLink">About</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="#">Mysteries</a>
+                <a class="nav-link" href="#" id="navMysteriesLink">Mysteries</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="#">Contact</a>
+                <a class="nav-link" href="#" id="navContactLink">Contact</a>
+            </li>
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Language
+                </a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                    <a class="dropdown-item" href="#" onclick="changeLanguage('en')">English</a>
+                    <a class="dropdown-item" href="#" onclick="changeLanguage('it')">Italiano</a>
+                    <a class="dropdown-item" href="#" onclick="changeLanguage('fr')">Français</a>
+                    <a class="dropdown-item" href="#" onclick="changeLanguage('es')">Español</a>
+                </div>
             </li>
         </ul>
     </div>
@@ -65,14 +88,14 @@
 
 <div class="header">
     <img src="logo.png" alt="Tenerife MysteryCode Logo" class="img-fluid">
-    <h1>Tenerife MysteryCode Adventure</h1>
+    <h1 id="headerTitle">Tenerife MysteryCode Adventure</h1>
 </div>
 
 <div class="container content">
-    <p class="lead">Welcome to the ultimate mystery adventure in Tenerife. Unlock the secrets, decode the mysteries, and discover the hidden gems of our beautiful island.</p>
+    <p class="lead" id="welcomeText"></p>
     <div class="mystery-code" id="mysteryCodeInfo">
-        <p>Scan your first code to begin the adventure...</p>
-        <i class="fas fa-qrcode fa-3x"></i>
+        <p id="scanPrompt"></p>
+        <a class="play-button" id="playButton" href="firstPage.html">Ready to play?</a>
     </div>
 </div>
 
@@ -80,6 +103,78 @@
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+<script>
+    function changeLanguage(lng) {
+        i18next.changeLanguage(lng, () => {
+            updateContent();
+        });
+    }
+
+    function updateContent() {
+        document.getElementById('navHomeLink').innerHTML = i18next.t('navHome');
+        document.getElementById('navAboutLink').innerHTML = i18next.t('navAbout');
+        document.getElementById('navMysteriesLink').innerHTML = i18next.t('navMysteries');
+        document.getElementById('navContactLink').innerHTML = i18next.t('navContact');
+        document.getElementById('welcomeText').innerHTML = i18next.t('welcome');
+        document.getElementById('scanPrompt').innerHTML = i18next.t('scanPrompt');
+        document.getElementById('playButton').innerHTML = i18next.t('playButton');
+    }
+
+    i18next.init({
+        lng: 'en', // Lingua di default
+        debug: true,
+        resources: {
+            en: {
+                translation: {
+                    "navHome": "Home",
+                    "navAbout": "About",
+                    "navMysteries": "Mysteries",
+                    "navContact": "Contact",
+                    "welcome": "Welcome to the ultimate mystery adventure in Tenerife.",
+                    "scanPrompt": "You have found and scanned your first code, but you are just at the beginning...",
+                    "playButton": "Ready to play?"
+                }
+            },
+            it: {
+                translation: {
+                    "navHome": "Home",
+                    "navAbout": "Chi Siamo",
+                    "navMysteries": "Misteri",
+                    "navContact": "Contatto",
+                    "welcome": "Benvenuti alla definitiva avventura misteriosa a Tenerife.",
+                    "scanPrompt": "Hai tovato e scansionato il tuo primo codice, ma sei solo all'inizio...",
+                    "playButton": "Pronto a giocare?"
+                }
+            },
+            fr: {
+                translation: {
+                    "navHome": "Accueil",
+                    "navAbout": "À Propos",
+                    "navMysteries": "Mystères",
+                    "navContact": "Contact",
+                    "welcome": "Bienvenue dans l'ultime aventure mystérieuse à Ténérife.",
+                    "scanPrompt": "Vous avez trouvé et scanné votre premier code, mais vous n'êtes qu'au début...",
+                    "playButton": "Prêt à jouer ?"
+                }
+            },
+            es: {
+                translation: {
+                    "navHome": "Inicio",
+                    "navAbout": "Acerca de",
+                    "navMysteries": "Misterios",
+                    "navContact": "Contacto",
+                    "welcome": "Bienvenidos a la aventura misteriosa definitiva en Tenerife.",
+                    "scanPrompt": " Has encontrado y escaneado tu primer código, pero solo estás al principio...",
+                    "playButton": "¿Listo para jugar?"
+                }
+            }
+        }
+    }, (err, t) => {
+        // Inizializzato e pronto per andare!
+        updateContent();
+    });
+</script>
 
 </body>
 </html>
