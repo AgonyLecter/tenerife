@@ -82,6 +82,12 @@
             updateContent();
         });
     }
+    document.addEventListener("DOMContentLoaded", function() {
+    var urlParams = new URLSearchParams(window.location.search);
+    var lang = urlParams.get('lang');
+    if (lang) changeLanguage(lang);
+});
+
 
     function updateContent() {
         document.getElementById('navbarBrand').textContent = i18next.t('navbarBrand');
