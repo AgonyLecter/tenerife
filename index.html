@@ -95,7 +95,7 @@
     <p class="lead" id="welcomeText"></p>
     <div class="mystery-code" id="mysteryCodeInfo">
         <p id="scanPrompt"></p>
-        <a class="play-button" id="playButton" href="1.html">Ready to play?</a>
+        <button class="play-button" id="playButton" onclick="goToNextPage()">Ready to play?</button>
     </div>
 </div>
 
@@ -110,6 +110,11 @@
             updateContent();
         });
     }
+    function goToNextPage() {
+    var lang = i18next.language;
+    window.location.href = `1.html?lang=${lang}`;
+}
+
 
     function updateContent() {
         document.getElementById('navHomeLink').innerHTML = i18next.t('navHome');
