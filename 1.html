@@ -77,42 +77,39 @@
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 <script>
-    document.addEventListener("DOMContentLoaded", function() {
+   document.addEventListener("DOMContentLoaded", function() {
         var urlParams = new URLSearchParams(window.location.search);
         var lang = urlParams.get('lang') || 'en';
-        changeLanguage(lang);
+        i18next.changeLanguage(lang, function() {
+            updateContent();
+            updateNavLinks(lang);
+        });
     });
 
     function changeLanguage(lng) {
         i18next.changeLanguage(lng, function(err, t) {
-            if (err) return console.log('something went wrong loading', err);
+            if (err) return console.error('Error changing language:', err);
             updateContent();
             updateNavLinks(lng);
+            // Aggiorna l'URL con il nuovo codice lingua per mantenere la coerenza
+            window.history.pushState({}, '', `?lang=${lng}`);
         });
     }
 
     function updateNavLinks(lang) {
         document.querySelectorAll('.navbar-nav .nav-link').forEach(link => {
-            const page = link.getAttribute('id').replace('nav', '').toLowerCase();
-            const href = (page === 'home' ? 'index.html' : page === 'about' ? 'idioma.html' : page + '.html');
-            link.setAttribute('href', `${href}?lang=${lang}`);
-        });
-        document.getElementById('navbarDropdownMenuLink').nextElementSibling.childNodes.forEach(item => {
-            if (item.tagName === 'A') {
-                item.onclick = function() { changeLanguage(item.text.toLowerCase()) };
-            }
+            var page = link.getAttribute('href').split('?')[0];
+            link.setAttribute('href', `${page}?lang=${lang}`);
         });
     }
 
     function updateContent() {
-        i18next.changeLanguage(i18next.language, function() {
-            document.getElementById('navHome').textContent = i18next.t('navHome');
-            document.getElementById('navAbout').textContent = i18next.t('navAbout');
-            document.getElementById('navMysteries').textContent = i18next.t('navMysteries');
-            document.getElementById('navContact').textContent = i18next.t('navContact');
-            document.getElementById('pageTitle').textContent = i18next.t('pageTitle');
-            document.getElementById('clueText').textContent = i18next.t('clueText');
-        });
+        document.getElementById('navHome').textContent = i18next.t('navHome');
+        document.getElementById('navAbout').textContent = i18next.t('navAbout');
+        document.getElementById('navMysteries').textContent = i18next.t('navMysteries');
+        document.getElementById('navContact').textContent = i18next.t('navContact');
+        document.getElementById('pageTitle').textContent = i18next.t('pageTitle');
+        document.getElementById('clueText').textContent = i18next.t('clueText');
     }
 
     i18next.init({
