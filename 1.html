@@ -37,16 +37,16 @@
 <body>
 
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-    <a class="navbar-brand" href="#" id="navbarBrand">Tenerife MysteryCode</a>
+    <a class="navbar-brand" href="index.html?lang=en" id="navbarBrand">Tenerife MysteryCode</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
         <div class="navbar-nav ml-auto">
-            <a class="nav-item nav-link" href="index.html" id="navHome">Home</a>
-            <a class="nav-item nav-link" href="#" id="navAbout">About</a>
-            <a class="nav-item nav-link" href="#" id="navMysteries">Mysteries</a>
-            <a class="nav-item nav-link" href="#" id="navContact">Merchandising</a>
+            <a class="nav-item nav-link" href="index.html?lang=en" id="navHome">Home</a>
+            <a class="nav-item nav-link" href="idioma.html?lang=en" id="navAbout">About</a>
+            <a class="nav-item nav-link" href="mysteries.html?lang=en" id="navMysteries">Mysteries</a>
+            <a class="nav-item nav-link" href="contact.html?lang=en" id="navContact">Contact</a>
             <div class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     Language
@@ -72,31 +72,47 @@
     <p class="lead" id="clueText"></p>
 </div>
 
+<!-- Bootstrap and jQuery -->
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-
 <script>
+    document.addEventListener("DOMContentLoaded", function() {
+        var urlParams = new URLSearchParams(window.location.search);
+        var lang = urlParams.get('lang') || 'en';
+        changeLanguage(lang);
+    });
+
     function changeLanguage(lng) {
-        i18next.changeLanguage(lng, () => {
+        i18next.changeLanguage(lng, function(err, t) {
+            if (err) return console.log('something went wrong loading', err);
             updateContent();
+            updateNavLinks(lng);
         });
     }
-    document.addEventListener("DOMContentLoaded", function() {
-    var urlParams = new URLSearchParams(window.location.search);
-    var lang = urlParams.get('lang');
-    if (lang) changeLanguage(lang);
-});
 
+    function updateNavLinks(lang) {
+        document.querySelectorAll('.navbar-nav .nav-link').forEach(link => {
+            const page = link.getAttribute('id').replace('nav', '').toLowerCase();
+            const href = (page === 'home' ? 'index.html' : page === 'about' ? 'idioma.html' : page + '.html');
+            link.setAttribute('href', `${href}?lang=${lang}`);
+        });
+        document.getElementById('navbarDropdownMenuLink').nextElementSibling.childNodes.forEach(item => {
+            if (item.tagName === 'A') {
+                item.onclick = function() { changeLanguage(item.text.toLowerCase()) };
+            }
+        });
+    }
 
     function updateContent() {
-        document.getElementById('navbarBrand').textContent = i18next.t('navbarBrand');
-        document.getElementById('navHome').textContent = i18next.t('navHome');
-        document.getElementById('navAbout').textContent = i18next.t('navAbout');
-        document.getElementById('navMysteries').textContent = i18next.t('navMysteries');
-        document.getElementById('navContact').textContent = i18next.t('navContact');
-        document.getElementById('pageTitle').textContent = i18next.t('pageTitle');
-        document.getElementById('clueText').textContent = i18next.t('clueText');
+        i18next.changeLanguage(i18next.language, function() {
+            document.getElementById('navHome').textContent = i18next.t('navHome');
+            document.getElementById('navAbout').textContent = i18next.t('navAbout');
+            document.getElementById('navMysteries').textContent = i18next.t('navMysteries');
+            document.getElementById('navContact').textContent = i18next.t('navContact');
+            document.getElementById('pageTitle').textContent = i18next.t('pageTitle');
+            document.getElementById('clueText').textContent = i18next.t('clueText');
+        });
     }
 
     i18next.init({
@@ -104,55 +120,46 @@
         resources: {
             en: {
                 translation: {
-                    "navbarBrand": "Tenerife MysteryCode",
                     "navHome": "Home",
                     "navAbout": "About",
                     "navMysteries": "Mysteries",
-                    "navContact": "Merchandising",
+                    "navContact": "Contact",
                     "pageTitle": "Tenerife MysteryCode Adventure - Clue 1",
                     "clueText": "You have found and scanned your first code, but you are just at the beginning... A mysterious figure has been seen near the ancient tree in the heart of the old town. Seek where history whispers to uncover your next clue."
                 }
             },
             it: {
-    translation: {
-        "navbarBrand": "Tenerife MysteryCode",
-        "navHome": "Home",
-        "navAbout": "Chi Siamo",
-        "navMysteries": "Misteri",
-        "navContact": "Merchandising",
-        "pageTitle": "Avventura Tenerife MysteryCode - Indizio 1",
-        "clueText": "Una figura misteriosa è stata vista vicino all'albero antico nel cuore della città vecchia. Cerca dove la storia sussurra per scoprire il tuo prossimo indizio."
-    }
-},
-fr: {
-    translation: {
-        "navbarBrand": "Tenerife MysteryCode",
-        "navHome": "Accueil",
-        "navAbout": "À Propos",
-        "navMysteries": "Mystères",
-        "navContact": "Merchandising",
-        "pageTitle": "Aventure Tenerife MysteryCode - Indice 1",
-        "clueText": "Une figure mystérieuse a été vue près de l'arbre ancien au cœur de la vieille ville. Cherchez où l'histoire murmure pour découvrir votre prochain indice."
-    }
-},
-es: {
-    translation: {
-        "navbarBrand": "Tenerife MysteryCode",
-        "navHome": "Inicio",
-        "navAbout": "Acerca de",
-        "navMysteries": "Misterios",
-        "navContact": "Merchandising",
-        "pageTitle": "Aventura Tenerife MysteryCode - Pista 1",
-        "clueText": "Una figura misteriosa ha sido vista cerca del árbol antiguo en el corazón del casco antiguo. Busca donde la historia susurra para descubrir tu próxima pista."
-    }
-}
-}
-    }, function(err, t) {
-        updateContent();
+                translation: {
+                    "navHome": "Home",
+                    "navAbout": "Chi Siamo",
+                    "navMysteries": "Misteri",
+                    "navContact": "Contatto",
+                    "pageTitle": "Avventura Tenerife MysteryCode - Indizio 1",
+                    "clueText": "Hai trovato e scansionato il tuo primo codice, ma sei solo all'inizio... Una figura misteriosa è stata vista vicino all'albero antico nel cuore della città vecchia. Cerca dove la storia sussurra per scoprire il tuo prossimo indizio."
+                }
+            },
+            fr: {
+                translation: {
+                    "navHome": "Accueil",
+                    "navAbout": "À Propos",
+                    "navMysteries": "Mystères",
+                    "navContact": "Contact",
+                    "pageTitle": "Aventure Tenerife MysteryCode - Indice 1",
+                    "clueText": "Vous avez trouvé et scanné votre premier code, mais ce n'est que le début... Une figure mystérieuse a été vue près de l'arbre ancien au cœur de la vieille ville. Cherchez où l'histoire murmure pour découvrir votre prochain indice."
+                }
+            },
+            es: {
+                translation: {
+                    "navHome": "Inicio",
+                    "navAbout": "Acerca De",
+                    "navMysteries": "Misterios",
+                    "navContact": "Contacto",
+                    "pageTitle": "Aventura Tenerife MysteryCode - Pista 1",
+                    "clueText": "Has encontrado y escaneado tu primer código, pero esto es solo el principio... Una figura misteriosa ha sido vista cerca del árbol antiguo en el corazón del casco antiguo. Busca donde la historia susurra para descubrir tu próxima pista."
+                }
+            }
+        }
     });
-
-    i18next.on('languageChanged', updateContent);
 </script>
-
 </body>
 </html>
