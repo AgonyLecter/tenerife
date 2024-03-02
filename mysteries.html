@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title data-i18n="title">Tenerife MysteryCode - Mysteries</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Mystery+Quest&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Mystery Quest', cursive;
+            background-color: #f4f4f9;
+            color: #333;
+            padding: 20px;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        .header img {
+            width: 150px;
+            margin-bottom: 20px;
+            animation: rotateLogo 10s infinite linear;
+        }
+        @keyframes rotateLogo {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .mystery-item {
+            background-color: #fff;
+            border-radius: 5px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .mystery-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+        .mystery-title {
+            font-size: 24px;
+            color: #000;
+        }
+        .mystery-summary {
+            font-size: 16px;
+            margin-top: 10px;
+        }
+        .language-selector {
+            margin-top: 20px;
+            text-align: center;
+        }
+        .language-selector button {
+            cursor: pointer;
+            padding: 5px 10px;
+            margin: 0 5px;
+            border: none;
+            background-color: #6c757d;
+            color: #ffffff;
+            border-radius: 5px;
+        }
+        .back-link {
+            display: block;
+            text-align: center;
+            margin-top: 20px;
+            font-size: 20px;
+            color: #4267B2;
+        }
+    </style>
+</head>
+<body>
+
+<div class="header">
+    <img src="logo.png" alt="Tenerife MysteryCode Logo">
+    <h1 data-i18n="mysteriesTitle">Mysteries</h1>
+</div>
+
+<div class="container">
+    <div class="mystery-item">
+        <h2 class="mystery-title" data-i18n="mystery1Title">The Lost Code of Da Vinci</h2>
+        <p class="mystery-summary" data-i18n="mystery1Summary">An adventure through historical enigmas tied to Leonardo Da Vinci's works, uncovering secrets hidden within his paintings. An intriguing journey that challenges the sharpest minds.</p>
+    </div>
+    <div class="mystery-item">
+        <h2 class="mystery-title" data-i18n="mystery2Title">The Sunken City of Atlantis</h2>
+        <p class="mystery-summary" data-i18n="mystery2Summary">Dive into the depths of the ocean in search of the legendary Atlantis. A tale of discoveries and unexplored mysteries waiting to be unveiled.</p>
+    </div>
+</div>
+
+<div class="language-selector">
+    <button data-lang="en">EN</button>
+    <button data-lang="it">IT</button>
+    <button data-lang="es">ES</button>
+    <button data-lang="fr">FR</button>
+</div>
+
+<a href="index.html" class="back-link"><i class="fas fa-arrow-left"></i> <span data-i18n="backHome">Back to Home</span></a>
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script src="https://unpkg.com/i18next@19.0.0/i18next.min.js"></script>
+<script>
+    i18next.init({
+        lng: localStorage.getItem('appLang') || 'en',
+        resources: {
+            en: {
+                translation: {
+                    "title": "Tenerife MysteryCode - Mysteries",
+                    "mysteriesTitle": "Mysteries",
+                    "mystery1Title": "The Lost Code of Da Vinci",
+                    "mystery1Summary": "An adventure through historical enigmas tied to Leonardo Da Vinci's works, uncovering secrets hidden within his paintings. An intriguing journey that challenges the sharpest minds.",
+                    "mystery2Title": "The Sunken City of Atlantis",
+                    "mystery2Summary": "Dive into the depths of the ocean in search of the legendary Atlantis. A tale of discoveries and unexplored mysteries waiting to be unveiled.",
+                    "backHome": "Back to Home"
+                }
+            },
+            it: {
+                translation: {
+                    "title": "Tenerife MysteryCode - Misteri",
+                    "mysteriesTitle": "Misteri",
+                    "mystery1Title": "Il Codice Perduto di Da Vinci",
+                    "mystery1Summary": "Un'avventura attraverso enigmi storici legati alle opere di Leonardo Da Vinci, scoprendo segreti nascosti nei suoi dipinti. Un viaggio intrigante che sfida le menti più acute.",
+                    "mystery2Title": "La Città Sommersa di Atlantide",
+                    "mystery2Summary": "Immergiti nelle profondità dell'oceano alla ricerca della leggendaria Atlantide. Un racconto di scoperte e misteri inesplorati in attesa di essere svelati.",
+                    "backHome": "Torna alla Home"
+                }
+            },
+            es: {
+                translation: {
+                    "title": "Tenerife MysteryCode - Misterios",
+                    "mysteriesTitle": "Misterios",
+                    "mystery1Title": "El Código Perdido de Da Vinci",
+                    "mystery1Summary": "Una aventura a través de enigmas históricos vinculados a las obras de Leonardo Da Vinci, descubriendo secretos ocultos en sus pinturas. Un viaje intrigante que desafía las mentes más agudas.",
+                    "mystery2Title": "La Ciudad Sumergida de Atlántida",
+                    "mystery2Summary": "Sumérgete en las profundidades del océano en busca de la legendaria Atlántida. Un cuento de descubrimientos y misterios inexplorados esperando ser revelados.",
+                    "backHome": "Volver a Inicio"
+                }
+            },
+            fr: {
+                translation: {
+                    "title": "Tenerife MysteryCode - Mystères",
+                    "mysteriesTitle": "Mystères",
+                    "mystery1Title": "Le Code Perdu de Da Vinci",
+                    "mystery1Summary": "Une aventure à travers des énigmes historiques liées aux œuvres de Léonard de Vinci, découvrant des secrets cachés dans ses peintures. Un voyage intrigant qui met au défi les esprits les plus vifs.",
+                    "mystery2Title": "La Ville Engloutie d'Atlantide",
+                    "mystery2Summary": "Plongez dans les profondeurs de l'océan à la recherche de la légendaire Atlantide. Un conte de découvertes et de mystères inexplorés attendant d'être dévoilés.",
+                    "backHome": "Retour à l'accueil"
+                }
+            }
+        }
+    }, function(err, t) {
+        updateContent();
+    });
+
+    function updateContent() {
+        document.querySelectorAll('[data-i18n]').forEach(function(element) {
+            var key = element.getAttribute('data-i18n');
+            var translation = i18next.t(key);
+            if (element.tagName.toLowerCase() === 'input') {
+                element.value = translation;
+            } else {
+                element.innerHTML = translation;
+            }
+        });
+    }
+
+    document.querySelectorAll('.language-selector button').forEach(function(button) {
+        button.addEventListener('click', function() {
+            var lang = this.getAttribute('data-lang');
+            i18next.changeLanguage(lang, updateContent);
+            localStorage.setItem('appLang', lang);
+        });
+    });
+</script>
+</body>
+</html>
