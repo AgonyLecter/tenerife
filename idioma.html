@@ -99,10 +99,6 @@
         i18next.changeLanguage(lng, () => {
             updateContent();
             updateNavLinks(lng);
-            // Update dropdown labels
-            document.querySelectorAll('#navbarDropdownMenuLink + .dropdown-menu .dropdown-item').forEach(function(item) {
-                item.textContent = i18next.t(`navLang_${item.getAttribute('onclick').match(/'(\w+)'/)[1]}`);
-            });
         });
     }
 
@@ -110,20 +106,29 @@
         document.getElementById('navHomeLink').href = `index.html?lang=${lang}`;
         document.getElementById('navMysteriesLink').href = `1.html?lang=${lang}`;
         document.getElementById('navContactLink').href = `idioma.html?lang=${lang}`;
+        // Add this part to update the dropdown menu dynamically based on the language selection
+        document.querySelectorAll('#navbarDropdownMenuLink + .dropdown-menu .dropdown-item').forEach(function(item) {
+            var language = item.getAttribute('onclick').match(/'(\w+)'/)[1];
+            item.textContent = i18next.t(`navLang_${language}`);
+            item.setAttribute('onclick', `changeLanguage('${language}')`);
+        });
     }
 
     function updateContent() {
         document.getElementById('contactTitle').innerHTML = i18next.t('contactTitle');
         document.getElementById('contactText').innerHTML = i18next.t('contactText');
+        // Update nav items text
+        document.getElementById('navHomeLink').textContent = i18next.t('navHome');
+        document.getElementById('navMysteriesLink').textContent = i18next.t('navMysteries');
+        document.getElementById('navContactLink').textContent = i18next.t('navContact');
     }
 
     i18next.init({
-        lng: 'en', // Default language
+        lng: 'en',
         resources: {
             en: {
                 translation: {
                     "navHome": "Home",
-                    "navAbout": "About",
                     "navMysteries": "Mysteries",
                     "navContact": "Contact",
                     "navLang_en": "English",
@@ -137,7 +142,6 @@
             it: {
                 translation: {
                     "navHome": "Home",
-                    "navAbout": "Chi Siamo",
                     "navMysteries": "Misteri",
                     "navContact": "Contatto",
                     "navLang_en": "Inglese",
@@ -151,7 +155,6 @@
             fr: {
                 translation: {
                     "navHome": "Accueil",
-                    "navAbout": "À Propos",
                     "navMysteries": "Mystères",
                     "navContact": "Contact",
                     "navLang_en": "Anglais",
@@ -165,7 +168,6 @@
             es: {
                 translation: {
                     "navHome": "Inicio",
-                    "navAbout": "Acerca De",
                     "navMysteries": "Misterios",
                     "navContact": "Contacto",
                     "navLang_en": "Inglés",
@@ -179,5 +181,3 @@
         }
     });
 </script>
-</body>
-</html>
