@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tenerife MysteryCode Adventure</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Mystery+Quest&display=swap" rel="stylesheet">
+    <style>
+        body, html {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            font-family: 'Mystery Quest', cursive;
+            background-color: #f4f4f9;
+            color: #333;
+        }
+        #map {
+            height: 100vh;
+            width: 100vw;
+            position: relative;
+        }
+        .map-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 400;
+            pointer-events: none;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            transition: opacity 2s ease-in-out;
+            opacity: 0;
+        }
+        .map-overlay.active {
+            opacity: 1;
+            transition: opacity 5s ease-in-out;
+        }
+        .overlay-content {
+            color: white;
+            text-align: center;
+            animation: fadeIn 2s ease-in-out forwards;
+        }
+        @keyframes fadeIn {
+            from { transform: translateY(20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        img.logo {
+            max-width: 100px; /* Adjust based on your logo's size */
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+
+<div id="map"></div>
+<div class="map-overlay" id="overlay">
+    <img src="logo.png" alt="Logo" class="logo">
+    <div class="overlay-content">
+        <h1 id="title">Tenerife MysteryCode</h1>
+        <p id="description">It starts from this position...</p>
+    </div>
+</div>
+
+<script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+<script>
+    const map = L.map('map', {
+        center: [28.059445, -16.733850],
+        zoom: 3,
+        zoomControl: false,
+        scrollWheelZoom: false,
+        dragging: false,
+        doubleClickZoom: false,
+        boxZoom: false,
+        touchZoom: false,
+        keyboard: false,
+        layers: [
+            L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+                attribution: 'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community'
+            })
+        ],
+    });
+
+    const translations = [
+        { lang: "en", title: "Tenerife MysteryCode", description: "It starts from this position..." },
+        { lang: "it", title: "Tenerife MysteryCode", description: "Inizierà da questa posizione..." },
+        { lang: "fr", title: "Tenerife MysteryCode", description: "Cela commence à partir de cette position..." },
+        { lang: "es", title: "Tenerife MysteryCode", description: "Comienza desde esta posición..." }
+    ];
+
+    let currentTranslationIndex = 0;
+
+    function changeLanguage() {
+        const translation = translations[currentTranslationIndex];
+        document.getElementById('title').textContent = translation.title;
+        document.getElementById('description').textContent = translation.description;
+
+        currentTranslationIndex = (currentTranslationIndex + 1) % translations.length;
+    }
+
+    function zoomInToLocation() {
+        let zoomLevel = 3;
+        const maxZoom = 17;
+        const interval = setInterval(() => {
+            if (zoomLevel >= maxZoom) {
+                clearInterval(interval);
+                document.getElementById('overlay').classList.add('active');
+                setInterval(changeLanguage, 3000); // Change language every 3 seconds
+            } else {
+                zoomLevel++;
+                map.setZoom(zoomLevel);
+            }
+        }, 1000); // Adjust this value to control the speed of the zoom
+    }
+
+    window.onload = () => {
+        zoomInToLocation();
+    };
+</script>
+
+</body>
+</html>
